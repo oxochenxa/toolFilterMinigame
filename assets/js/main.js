@@ -140,6 +140,7 @@ function filterphone() {
         cdg.data.splice(i, 1);
       }else {
         while (j < cdg.data.length){
+          if (cdg.data[3359])
           if(cdg.data[i][4] == cdg.data[j][4] & i != j){
             cdg.data[j].push("Lỗi SĐT");
             _deleteData.push(cdg.data[j]);
@@ -155,7 +156,7 @@ function filterphone() {
 function filtercmnd() {
   for(i = 1; i <= cdg.data.length; i++){
     if(cdg.data[i]){
-      if(cdg.data[i][2].length != 3){
+      if(cdg.data[i][2].length > 3){
         if(cdg.data[i]) {
           cdg.data[i].push("Lỗi CMND");
         }
