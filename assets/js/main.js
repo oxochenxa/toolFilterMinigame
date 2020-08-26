@@ -111,71 +111,75 @@ function filterdate() {
     $("#checkbox_filterdate").prop("checked", false);
   }else {
     cdg.data = _gobalData;
-    for(i = 1; i <= cdg.data.length; i++){
-      if(cdg.data[i]){
-        var toDate = new Date(cdg.data[i][0]).getDate();
-        var toMonth = new Date(cdg.data[i][0]).getMonth()+1;
-        var toYear = new Date(cdg.data[i][0]).getFullYear();
+    cdg.data.forEach(function (item, index){
+      if (index != 0){
+        var toDate = new Date(item[0]).getDate();
+        var toMonth = new Date(item[0]).getMonth()+1;
+        var toYear = new Date(item[0]).getFullYear();
         var originalDate = new Date(toYear +'-'+ toMonth +'-'+ toDate);
-      }
 
-      if (isLater(filterdate, originalDate)){
-        if(cdg.data[i]) {
-          cdg.data[i].push("Lỗi Ngày");
+        if (isLater(filterdate, originalDate)){
+          cdg.data[index].push("Lỗi Ngày");
+          _deleteData.push(cdg.data[index]);
+          cdg.data.splice(index, 1);
         }
-        _deleteData.push(cdg.data[i]);
-        cdg.data.splice(i, 1);
       }
-    }
+    });
   }
 }
 
 function filterphone() {
-  for(i = 1; i < cdg.data.length - 1; i++){
-    var j = i + 1;
-    if(cdg.data[i]){
-      if(cdg.data[i][4].length > 10 | cdg.data[i][4].length < 9){
-        cdg.data[i].push("Lỗi SĐT");
-        _deleteData.push(cdg.data[i]);
-        cdg.data.splice(i, 1);
-      }else {
-        while (j < cdg.data.length){
-          if (cdg.data[3359])
-          if(cdg.data[i][4] == cdg.data[j][4] & i != j){
-            cdg.data[j].push("Lỗi SĐT");
-            _deleteData.push(cdg.data[j]);
-            cdg.data.splice(j, 1);
-          }
-          else j += 1;
-        }
-      }
+  var result = [];
+
+  cdg.data.forEach(function (item, index){
+    if(index != 0 & (item[4].length > 10 | item[4].length < 9)){
+      cdg.data[index].push("Lỗi SĐT");
+      _deleteData.push(cdg.data[index]);
+      cdg.data.splice(index, 1)
+    }else if (result.indexOf(cdg.data[index][4]) == -1){
+      result.push(cdg.data[index][4]);
+    }else {
+      cdg.data[index].push("Lỗi SĐT");
+      _deleteData.push(cdg.data[index]);
+      cdg.data.splice(index, 1);
     }
-  }
+  });
+
+  cdg.data.forEach(function (item, index){
+    if(index != 0 & (item[4].length > 10 | item[4].length < 9)){
+      cdg.data[index].push("Lỗi SĐT");
+      _deleteData.push(cdg.data[index]);
+      cdg.data.splice(index, 1)
+    }else if (result.indexOf(cdg.data[index][4]) == -1){
+      result.push(cdg.data[index][4]);
+    }else {
+      cdg.data[index].push("Lỗi SĐT");
+      _deleteData.push(cdg.data[index]);
+      cdg.data.splice(index, 1);
+    }
+  });
 }
 
 function filtercmnd() {
-  for(i = 1; i <= cdg.data.length; i++){
-    if(cdg.data[i]){
-      if(cdg.data[i][2].length > 3){
-        if(cdg.data[i]) {
-          cdg.data[i].push("Lỗi CMND");
-        }
-        _deleteData.push(cdg.data[i]);
-        cdg.data.splice(i, 1);
-      }
+  cdg.data.forEach(function (item, index){
+    if(index != 0 & item[2].length > 3){
+      cdg.data[index].push("Lỗi CMND");
+      _deleteData.push(cdg.data[index]);
+      cdg.data.splice(index, 1);
     }
-  }
+  });
 }
+
 function show_data_remove() {
   if (cdg.data == null || _deleteData == null)
     alert("Làm gì có data mà đòi hiện!!!")
   else{
     var str = "";
     str += '<thead><tr>';
-    for(i = 0; i < cdg.data[0].length; i++){
-      if (cdg.data[0][i])
-        str += '<th>'+cdg.data[0][i]+'</th>';
-    }
+
+    cdg.data[0].forEach(function (item){
+      str += '<th>'+item+'</th>';
+    });
     str += '<th>Lỗi</th>';
     str += '</tr></thead>';
     str += '<tbody>';
@@ -188,6 +192,14 @@ function show_data_remove() {
       }
       str += '</tr>';
     }
+
+    _deleteData.forEach(function (item, index){
+      str += '<tr>';
+      item.forEach(function (item_m, index){
+        str += '<th>'+item_m+'</th>';
+      });
+      str += '</tr>';
+    });
     str += '</tbody>';
     $('table#remove_data').append(str);
     $('#remove_data').DataTable(
