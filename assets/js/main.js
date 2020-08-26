@@ -184,15 +184,6 @@ function show_data_remove() {
     str += '</tr></thead>';
     str += '<tbody>';
 
-    for(i = 0; i < _deleteData.length; i++){
-      str += '<tr>';
-      for(j = 0; j < _deleteData[i].length; j++){
-        if (_deleteData[i][j])
-          str += '<th>'+_deleteData[i][j]+'</th>';
-      }
-      str += '</tr>';
-    }
-
     _deleteData.forEach(function (item, index){
       str += '<tr>';
       item.forEach(function (item_m, index){
