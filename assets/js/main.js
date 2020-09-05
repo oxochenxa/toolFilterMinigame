@@ -132,30 +132,18 @@ function filterphone() {
   var result = [];
 
   cdg.data.forEach(function (item, index){
-    if(index != 0 & (item[4].length > 10 | item[4].length < 9)){
-      cdg.data[index].push("Lỗi SĐT");
-      _deleteData.push(cdg.data[index]);
-      cdg.data.splice(index, 1)
-    }else if (result.indexOf(cdg.data[index][4]) == -1){
-      result.push(cdg.data[index][4]);
-    }else {
-      cdg.data[index].push("Lỗi SĐT");
-      _deleteData.push(cdg.data[index]);
-      cdg.data.splice(index, 1);
-    }
-  });
-
-  cdg.data.forEach(function (item, index){
-    if(index != 0 & (item[4].length > 10 | item[4].length < 9)){
-      cdg.data[index].push("Lỗi SĐT");
-      _deleteData.push(cdg.data[index]);
-      cdg.data.splice(index, 1)
-    }else if (result.indexOf(cdg.data[index][4]) == -1){
-      result.push(cdg.data[index][4]);
-    }else {
-      cdg.data[index].push("Lỗi SĐT");
-      _deleteData.push(cdg.data[index]);
-      cdg.data.splice(index, 1);
+    if (index != 0){
+      if(item[4].length > 10 | item[4].length < 9){
+        cdg.data[index].push("Lỗi SĐT");
+        _deleteData.push(cdg.data[index]);
+        cdg.data.splice(index, 1)
+      }else if (result.indexOf(item[4]) == -1){
+        result.push(item[4]);
+      }else {
+        cdg.data[index].push("Trùng SĐT");
+        _deleteData.push(cdg.data[index]);
+        cdg.data.splice(index, 1);
+      }
     }
   });
 }
